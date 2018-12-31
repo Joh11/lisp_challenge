@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 
 #include "prettify.h"
@@ -34,5 +35,29 @@ char *sprettify(sexpr_ptr id, char *str)
 
     default: // Just to suppress warning, should never be reached
 	return str;
+    }
+}
+
+void prettify(sexpr_ptr id)
+{
+    if(sexprTable[id] == NULL)
+	return;
+
+    switch(sexprTable[id]->type)
+    {
+    case ATOM:
+	printf("%s", sexprTable[id]->value.atom_);
+	break;
+    case PAIR:
+	printf("(");
+	prettify(sexprTable[id]->value.pair_.fst);
+	printf(" . ");
+	prettify(sexprTable[id]->value.pair_.snd);
+	printf(")");	
+	break;
+    case LAMBDA:
+	// TODO maybe something better
+	printf("#LAMBDA");
+	break;
     }
 }

@@ -1,7 +1,14 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
+#include "core.h"
+#include "init.h"
 #include "sexpr.h"
+#include "parse.h"
+#include "eval.h"
+#include "prettify.h"
+#include "terminate.h"
 
 tagged_sexpr **sexprTable;
 int sexprTableSize;
@@ -10,6 +17,38 @@ int quit = 0;
 
 int mainLoop()
 {
+    fillSexprTable(10000);
+    
+    while(!quit)
+    {
+	// read line from stdin
+
+	// TODO variable length
+	char str[1024] = "";
+	fgets(str, 1024, stdin);
+	cleanStr(str);
+
+	// tokenize
+	llist *tokens = tokenize(str);
+	llist *current = tokens;
+
+
+	// TODO maybe collect garbage
+	while(current) // while there are still some tokens
+	{
+	    sexpr_ptr sexpr = parseOne(&current); // parse once
+	    sexpr = eval(sexpr); // eval
+	    prettify(sexpr); // print the prettified result
+	}
+
+	// free the tokens
+	freeLlist(tokens);
+
+	// loop
+    }
+
+    freeSexprTable();
+    
     return 0;
 }
 

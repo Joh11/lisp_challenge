@@ -6,9 +6,6 @@
 
 void cleanStr(char *str)
 {
-    char *temp = malloc(sizeof(char) * (strlen(str) + 1));
-
-    size_t j = 0;
     for(size_t i = 0 ; i < strlen(str) ; ++i)
     {
 	char c = str[i];
@@ -17,43 +14,45 @@ void cleanStr(char *str)
 	    c -= 32;
 
 	if(strchr("().-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", c))
-	{
-	    temp[j] = c;
-	    j++;
-	}
+	    str[i] = c;
+	else
+	    str[i] = ' ';
     }
-    temp[j] = '\0';
-
-    strcpy(str, temp);
-
-    free(temp);
 }
 
 llist *tokenize(const char* str)
 {
-    llist root = {NULL, NULL};
+    llist root;
+    root.str = NULL;
+    root.next = NULL;
     llist *current = &root;
 
     size_t j = 0;
     for(size_t i = 0 ; i < strlen(str) ; i++)
     {
 	char c = str[i];
-	if(strchr("().", c)) // 1 char tokens
+
+	if(strchr("(). ", c)) // 1 char tokens
 	{
 	    if(j != i) // If a token must be processed first
 	    {
 		current->next = malloc(sizeof(llist));
 		current = current->next;
 		current->str = malloc((1 + i - j) * sizeof(char));
+		current->next = NULL;
 		strncpy(current->str, str + j, i - j);
 		current->str[i - j] = '\0';
 	    }
-	    
-	    current->next = malloc(sizeof(llist));
-	    current = current->next;
-	    current->str = malloc(2 * sizeof(char));
-	    current->str[0] = c;
-	    current->str[1] = '\0';
+
+	    if(c != ' ') // Make a new token only if it is not a space
+	    {
+		current->next = malloc(sizeof(llist));
+		current = current->next;
+		current->str = malloc(2 * sizeof(char));
+		current->str[0] = c;
+		current->str[1] = '\0';
+		current->next = NULL;
+	    }
 
 	    j = i + 1; // forward the second cursor
 	}
@@ -66,6 +65,7 @@ llist *tokenize(const char* str)
 	current->str = malloc((1 + strlen(str) - j) * sizeof(char));
 	strncpy(current->str, str + j, strlen(str) - j);
 	current->str[strlen(str) - j] = '\0';
+	current->next = NULL;
     }
 
     return root.next;

@@ -8,6 +8,7 @@
 
 int main(int argc, char *argv[])
 {
+    /*
     printf("Init phase : \n");
 
     fillSexprTable(10000);
@@ -35,6 +36,6 @@ int main(int argc, char *argv[])
     printf("Terminating phase : \n");
     
     freeSexprTable();
-    
+    */
     return mainLoop();
 }

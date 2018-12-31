@@ -1,13 +1,10 @@
-lispexec: main.o core.o init.o terminate.o prettify.o parse.o
-	$(CC) -o $@ $^
+CCFLAGS = -g
 
-main.o: main.c
-core.o: core.c
-init.o: init.c
-terminate.o: terminate.c
-prettify.o: prettify.c
-parse.o: parse.c
+lispexec: main.o core.o init.o terminate.o prettify.o parse.o eval.o
+	$(CC) $(CCFLAGS) -o $@ $^
 
+%.o: %.c
+	$(CC) $(CCFLAGS) -c $< -o $@
 
 # Cleaning stuff
 clean:

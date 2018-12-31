@@ -10,4 +10,7 @@
 // TODO (A . (B . NIL)) -> (A B)
 char *sprettify(sexpr_ptr id, char *str);
 
+// A safe version printing on the screen directly
+void prettify(sexpr_ptr id);
+
 #endif
