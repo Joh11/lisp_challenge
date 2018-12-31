@@ -6,7 +6,14 @@
 tagged_sexpr **sexprTable;
 int sexprTableSize;
 
-int newAtom(int id, const char* str)
+int quit = 0;
+
+int mainLoop()
+{
+    return 0;
+}
+
+int newAtom(sexpr_ptr id, const char* str)
 {
     if(sexprTable[id] != NULL)
 	return 0;
@@ -19,7 +26,7 @@ int newAtom(int id, const char* str)
     return 1;
 }
 
-int newPair(int id, int fst, int snd)
+int newPair(sexpr_ptr id, sexpr_ptr fst, sexpr_ptr snd)
 {
     if(sexprTable[id] || !sexprTable[fst] || !sexprTable[snd])
 	// If id is not free, or fst / snd is unbound
@@ -31,4 +38,16 @@ int newPair(int id, int fst, int snd)
     sexprTable[id]->value.pair_.snd = snd;
 
     return 1;
+}
+
+sexpr_ptr getFirstFree()
+{
+    // TODO maybe something smarter, not in linear time
+    for(int i = 0 ; i < sexprTableSize ; i++)
+    {
+	if(sexprTable[i] == NULL)
+	    return i;
+    }
+
+    return -1;
 }

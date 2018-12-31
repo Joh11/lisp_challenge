@@ -17,7 +17,6 @@ void freeSexprTable()
 	    case ATOM:
 		// First free the string, then the atom itself
 		free(sexprTable[i]->value.atom_);
-		free(sexprTable[i]);
 		break;
 	    case PAIR:
 		// Do nothing : it may have already been done, or it
@@ -27,7 +26,7 @@ void freeSexprTable()
 		// TODO do something here maybe
 		break;
 	    }
-
+	    free(sexprTable[i]);
 	    sexprTable[i] = NULL;
 	}
     }
