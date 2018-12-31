@@ -1,14 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Basically everything sexpr is :
-// a symbol A (formed of A-Z, 0-9, and -)
-// a pair (sexpr1 . sexpr2)
-// a lambda
-
+#include "init.h"
+#include "terminate.h"
+#include "prettify.h"
 
 int main(int argc, char *argv[])
 {
-    printf("HEllo world\n");
+    printf("Init phase : \n");
+
+    fillSexprTable(10000);
+
+    newPair(300, 0, 1);
+    char temp[100];
+    sprettify(300, temp);
+    printf("Prettify test : %s\n", temp);
+
+    printf("Terminating phase : \n");
+
+    freeSexprTable();
+    
     return 0;
 }
